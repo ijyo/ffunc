@@ -13,7 +13,7 @@ function ffunc::git::bin() {
 }
 
 function ffunc::git::inside_work_tree() {
-  $(ffunc::git::bin) rev-parse --is-inside-work-tree >/dev/null
+  eval "$(ffunc::git::bin) rev-parse --is-inside-work-tree >/dev/null"
 }
 
 function ffunc::git::log() {
