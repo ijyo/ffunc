@@ -2,7 +2,7 @@ function ffunc::cd::fzf() {
   fzf --no-multi "$@"
 }
 
-function ffunc::fzf_cd() {
+function ffunc::cd::do() {
   builtin cd $(print ${(F)@} | sort -u | ffunc::cd::fzf)
 }
 
@@ -23,20 +23,20 @@ function ffunc::cd::cdr::list() {
   cdr -l | sed -e 's/^[^ ][^ ]* *//' | sed -e "s:^~:$HOME:"
 }
 
-function ffunc::cd::cdr::cd() {
+function ffunc::cd::cdr() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  ffunc::fzf_cd $(ffunc::cd::cdr::list)
+  ffunc::cd::do $(ffunc::cd::cdr::list)
 }
 
 function ffunc::cd::ghq::list() {
   ghq list --full-path
 }
 
-function ffunc::cd::ghq::cd() {
+function ffunc::cd::ghq() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  ffunc::fzf_cd $(ffunc::cd::ghq::list)
+  ffunc::cd::do $(ffunc::cd::ghq::list)
 }
 
 function ffunc::cd() {
@@ -45,5 +45,5 @@ function ffunc::cd() {
   local cdr=$(ffunc::cd::cdr::list)
   local ghq=$(ffunc::cd::ghq::list)
 
-  ffunc::fzf_cd $(print "${cdr}\n${ghq}")
+  ffunc::cd::do $(print "${cdr}\n${ghq}")
 }
