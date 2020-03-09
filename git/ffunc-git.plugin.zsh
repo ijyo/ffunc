@@ -16,7 +16,7 @@ function ffunc::git::log() {
       --tiebreak=index \
       --bind="enter:execute($git_show | LESS='-R' less)" \
       --bind="ctrl-y:execute-silent($grep_hash | xargs -I% echo -n "%" | xsel -ib)+abort" \
-      --bind="ctrl-b:execute($grep_hash | xargs -I% git rebase -i %)+abort" \
+      --bind="ctrl-r:execute($grep_hash | xargs -I% git rebase -i %)+abort" \
       --bind='?:toggle-preview' \
       --preview-window='right:60%' \
       --preview="$git_show"
