@@ -1,8 +1,8 @@
-ffunc::fzf_cd() {
+function ffunc::fzf_cd() {
   builtin cd $(print ${(F)@} | sort -u | fzf --no-multi)
 }
 
-ffunc::cd::cdr::compact-chpwd_recent_dirs() {
+function ffunc::cd::cdr::compact-chpwd_recent_dirs() {
   emulate -L zsh
   setopt extendedglob
   local -aU reply
@@ -14,28 +14,28 @@ ffunc::cd::cdr::compact-chpwd_recent_dirs() {
   (( $history_size == $#reply )) || chpwd_recent_filehandler $reply
 }
 
-ffunc::cd::cdr::list() {
+function ffunc::cd::cdr::list() {
   ffunc::cd::cdr::compact-chpwd_recent_dirs
   cdr -l | sed -e 's/^[^ ][^ ]* *//' | sed -e "s:^~:$HOME:"
 }
 
-ffunc::cd::cdr::cd() {
+function ffunc::cd::cdr::cd() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
   ffunc::fzf_cd $(ffunc::cd::cdr::list)
 }
 
-ffunc::cd::ghq::list() {
+function ffunc::cd::ghq::list() {
   ghq list --full-path
 }
 
-ffunc::cd::ghq::cd() {
+function ffunc::cd::ghq::cd() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
   ffunc::fzf_cd $(ffunc::cd::ghq::list)
 }
 
-ffunc::cd() {
+function ffunc::cd() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
   local cdr=$(ffunc::cd::cdr::list)
