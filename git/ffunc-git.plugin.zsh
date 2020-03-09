@@ -7,14 +7,18 @@ function ffunc::git::log() {
   ffunc::git::inside_work_tree || return 1
 
   local git=${GIT:-git}
+  local cmd="$git log --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr%' $@"
+
   local grep_hash="echo {} | grep -o '[a-f0-9]\{7\}'"
   local git_show="$grep_hash | head -1 | xargs -I% $git show --color=always %"
-  $git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr%" $@ | \
+
+  eval $cmd | \
     fzf --ansi \
       --no-sort \
       --no-multi \
       --tiebreak=index \
       --bind="enter:execute($git_show | LESS='-R' less)" \
+      --bind="ctrl-r:reload($cmd)" \
       --bind="ctrl-y:execute-silent($grep_hash | xargs -I% echo -n "%" | xsel -ib)+abort" \
       --bind="!:execute($grep_hash | xargs -I% $git rebase -i %)+abort" \
       --bind='ctrl-v:toggle-preview' \
@@ -26,7 +30,7 @@ function ffunc::git::status() {
   ffunc::git::inside_work_tree || return 1
 
   local git=${GIT:-git}
-  local cmd="$git -c color.status=always status -s"
+  local cmd="$git -c color.status=always status -s $@"
 
   local git_unstage="[[ {1} = '??' ]] && return || $git restore --staged {-1}"
   local git_restore="[[ {1} = '??' ]] && return || $git restore {-1}"
