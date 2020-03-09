@@ -1,3 +1,7 @@
+function ffunc::git::fzf() {
+  fzf "$@"
+}
+
 function ffunc::git::inside_work_tree() {
   local git=${GIT:-git}
   $git rev-parse --is-inside-work-tree >/dev/null
@@ -13,7 +17,7 @@ function ffunc::git::log() {
   local git_show="$grep_hash | head -1 | xargs -I% $git show --color=always %"
 
   eval $cmd | \
-    fzf --ansi \
+    ffunc::git::fzf --ansi \
       --no-sort \
       --no-multi \
       --tiebreak=index \
@@ -36,7 +40,7 @@ function ffunc::git::status() {
   local git_restore="[[ {1} = '??' ]] && return || $git restore {-1}"
 
   eval $cmd | \
-    fzf --ansi \
+    ffunc::git::fzf --ansi \
       --no-sort \
       --no-multi \
       --bind="enter:execute($git diff --color=always -- {-1} | LESS='-R' less)" \

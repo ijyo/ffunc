@@ -1,5 +1,9 @@
+function ffunc::cd::fzf() {
+  fzf --no-multi "$@"
+}
+
 function ffunc::fzf_cd() {
-  builtin cd $(print ${(F)@} | sort -u | fzf --no-multi)
+  builtin cd $(print ${(F)@} | sort -u | ffunc::cd::fzf)
 }
 
 function ffunc::cd::cdr::compact-chpwd_recent_dirs() {
