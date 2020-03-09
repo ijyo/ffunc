@@ -1,5 +1,9 @@
 function ffunc::cd::fzf() {
-  fzf --no-multi "$@"
+  FZF_DEFAULT_OPTS="
+    $FZF_DEFAULT_OPTS
+    $FFUNC_FZF_DEFAULT_OPTS
+    --no-multi
+  " fzf "$@"
 }
 
 function ffunc::cd::do() {
