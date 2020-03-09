@@ -22,5 +22,5 @@ zinit ice from'gitlab' atload'() {
 
   alias gl=ffunc::git::log
 }'
-zinit light ijyo/ffunc
+zinit light ijyo/ffunc.git
 ```
