@@ -1,4 +1,11 @@
+function ffunc::git::inside_work_tree() {
+  local git=${GIT:-git}
+  $git rev-parse --is-inside-work-tree >/dev/null
+}
+
 function ffunc::git::log() {
+  ffunc::git::inside_work_tree || return 1
+
   local git=${GIT:-git}
   local grep_hash="echo {} | grep -o '[a-f0-9]\{7\}'"
   local git_show="$grep_hash | head -1 | xargs -I% $git show --color=always %"
