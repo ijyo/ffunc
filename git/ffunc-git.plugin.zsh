@@ -21,3 +21,29 @@ function ffunc::git::log() {
       --preview-window='right:60%' \
       --preview="$git_show"
 }
+
+function ffunc::git::status() {
+  ffunc::git::inside_work_tree || return 1
+
+  local git=${GIT:-git}
+  local cmd="$git -c color.status=always status -s"
+
+  local git_unstage="[[ {1} = '??' ]] && return || $git restore --staged {-1}"
+  local git_restore="[[ {1} = '??' ]] && return || $git restore {-1}"
+
+  eval $cmd | \
+    fzf --ansi \
+      --no-sort \
+      --no-multi \
+      --bind="enter:execute($git diff --color=always -- {-1} | LESS='-R' less)" \
+      --bind="alt-enter:execute($git diff --staged --color=always -- {-1} | LESS='-R' less)" \
+      --bind="ctrl-r:reload($cmd)" \
+      --bind="space:execute($git commit)+reload($cmd)" \
+      --bind="<:execute($git add {-1})+reload($cmd)" \
+      --bind=">:execute($git_unstage)+reload($cmd)" \
+      --bind="!:execute($git_restore)+reload($cmd)" \
+      --bind='ctrl-y:execute(echo -n {-1} | xsel -ib)+abort' \
+      --bind='ctrl-v:toggle-preview' \
+      --preview-window='right:60%' \
+      --preview="$git diff --color=always -- {-1}"
+}
