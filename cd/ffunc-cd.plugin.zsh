@@ -7,7 +7,8 @@ function ffunc::cd::fzf() {
 }
 
 function ffunc::cd::do() {
-  builtin cd $(print ${(F)@} | sort -u | ffunc::cd::fzf)
+  local d=$(print ${(F)@} | sort -u | ffunc::cd::fzf)
+  [[ -n "$d" ]] && builtin cd $d
 }
 
 function ffunc::cd::cdr::compact-chpwd_recent_dirs() {
