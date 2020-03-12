@@ -1,14 +1,14 @@
-function ffunc::file::fzf() {
+function ffile::fzf() {
   FZF_DEFAULT_OPTS="
     $FZF_DEFAULT_OPTS
     --ansi
     --bind='ctrl-v:toggle-preview' \
     --preview-window='right:60%' \
-    $FFUNC_FZF_DEFAULT_OPTS
+    $FFILE_FZF_DEFAULT_OPTS
   " fzf "$@"
 }
 
-function ffunc::file::preview() {
+function ffile::preview() {
   local mime=$(file --mime-type -b "$1")
   if [[ "$mime" = "inode/directory" ]]; then
     ls -a -1 --color=always --group-directories-first "$1"
@@ -19,12 +19,12 @@ function ffunc::file::preview() {
   fi
 }
 
-function ffunc::file::open() {
-  local preview="$(typeset -f ffunc::file::preview); ffunc::file::preview {}"
-  preview=${FFUNC_FILE_PREVIEW:-"$preview"}
+function ffile::open() {
+  local preview="$(typeset -f ffile::preview); ffile::preview {}"
+  preview=${FFILE_PREVIEW:-"$preview"}
 
   local entries=$(ls -1 -a --color=always --group-directories-first | \
-    ffunc::file::fzf \
+    ffile::fzf \
       --no-sort \
       --multi \
       --tac \
@@ -38,8 +38,8 @@ function ffunc::file::open() {
     return
   fi
 
-  if [[ -n "$FFUNC_FILE_OPEN" ]]; then
-    $FFUNC_FILE_OPEN ${(f)entries}
+  if [[ -n "$FFILE_OPEN" ]]; then
+    $FFILE_OPEN ${(f)entries}
     return
   fi
 
