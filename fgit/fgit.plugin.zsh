@@ -50,8 +50,8 @@ function fgit::status() {
       --bind="alt-enter:execute($bin diff --staged --color=always -- {-1} | LESS='-R' less)" \
       --bind="ctrl-r:reload($cmd)" \
       --bind="space:execute($bin commit)+reload($cmd)" \
-      --bind="<:execute($bin add {-1})+reload($cmd)" \
-      --bind=">:execute($git_unstage)+reload($cmd)" \
+      --bind="[:execute($bin add {-1})+reload($cmd)" \
+      --bind="]:execute($git_unstage)+reload($cmd)" \
       --bind="!:execute($git_restore)+reload($cmd)" \
       --bind='ctrl-y:execute(echo -n {-1} | xsel -ib)+abort' \
       --preview="$bin diff --color=always -- {-1}"
