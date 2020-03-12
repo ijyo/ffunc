@@ -1,17 +1,17 @@
-function ffunc::cd::fzf() {
+function fcd::fzf() {
   FZF_DEFAULT_OPTS="
     $FZF_DEFAULT_OPTS
-    $FFUNC_FZF_DEFAULT_OPTS
+    $FCD_FZF_DEFAULT_OPTS
     --no-multi
   " fzf "$@"
 }
 
-function ffunc::cd::do() {
-  local d=$(print ${(F)@} | sort -u | ffunc::cd::fzf)
+function fcd::do() {
+  local d=$(print ${(F)@} | sort -u | fcd::fzf)
   [[ -n "$d" ]] && builtin cd $d
 }
 
-function ffunc::cd::cdr::compact-chpwd_recent_dirs() {
+function fcd::cdr::compact-chpwd_recent_dirs() {
   emulate -L zsh
   setopt extendedglob
   local -aU reply
@@ -23,32 +23,32 @@ function ffunc::cd::cdr::compact-chpwd_recent_dirs() {
   (( $history_size == $#reply )) || chpwd_recent_filehandler $reply
 }
 
-function ffunc::cd::cdr::list() {
-  ffunc::cd::cdr::compact-chpwd_recent_dirs
+function fcd::cdr::list() {
+  fcd::cdr::compact-chpwd_recent_dirs
   cdr -l | sed -e 's/^[^ ][^ ]* *//' | sed -e "s:^~:$HOME:"
 }
 
-function ffunc::cd::cdr() {
+function fcd::cdr() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  ffunc::cd::do $(ffunc::cd::cdr::list)
+  fcd::do $(fcd::cdr::list)
 }
 
-function ffunc::cd::ghq::list() {
+function fcd::ghq::list() {
   ghq list --full-path
 }
 
-function ffunc::cd::ghq() {
+function fcd::ghq() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  ffunc::cd::do $(ffunc::cd::ghq::list)
+  fcd::do $(fcd::ghq::list)
 }
 
-function ffunc::cd() {
+function fcd::cd() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  local cdr=$(ffunc::cd::cdr::list)
-  local ghq=$(ffunc::cd::ghq::list)
+  local cdr=$(fcd::cdr::list)
+  local ghq=$(fcd::ghq::list)
 
-  ffunc::cd::do $(print "${cdr}\n${ghq}")
+  fcd::do $(print "${cdr}\n${ghq}")
 }

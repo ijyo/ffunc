@@ -8,20 +8,22 @@ ffunc is zsh utilities with [fzf](https://github.com/junegunn/fzf).
 
 ```zsh
 zinit ice from'gitlab' atload'() {
-  alias c=ffunc::cd
+  alias c=fcd::cd
 
-  function __put-ffunc_history() {
-    BUFFER=$(ffunc::history)
+  alias fo=ffm::open
+
+  alias gl=fgit::log
+  alias gs=fgit::status
+
+  function __put-fhist() {
+    BUFFER=$(fhist::history)
     CURSOR=$#BUFFER
     zle -R -c
   }
-  zle -N __put-ffunc_history
+  zle -N __put-fhist
   for m in viins vicmd; do
-    bindkey -M $m "^r" __put-ffunc_history
+    bindkey -M $m "^r" __put-fhist
   done
-
-  alias gl=ffunc::git::log
-  alias gs=ffunc::git::status
 }'
 zinit light ijyo/ffunc.git
 ```
