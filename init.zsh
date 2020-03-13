@@ -17,4 +17,4 @@ function __put-fhist() {
   zle -R -c
 }
 zle -N __put-fhist
-bindkey "^r" __put-fhist
+bindkey ^r __put-fhist
