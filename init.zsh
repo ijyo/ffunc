@@ -17,6 +17,4 @@ function __put-fhist() {
   zle -R -c
 }
 zle -N __put-fhist
-for m in viins vicmd; do
-  bindkey -M $m "^r" __put-fhist
-done
+bindkey "^r" __put-fhist
