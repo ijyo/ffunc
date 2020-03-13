@@ -3,6 +3,7 @@ alias c=fcd::all
 
 # ffm
 alias fo=ffm::open
+alias fe="ffm::open ${VISUAL:-${EDITOR:-less}}"
 alias fcp=ffm::cp
 alias fmv=ffm::mv
 
