@@ -46,10 +46,10 @@ function fgit::status() {
 
   eval $cmd | \
     fgit::fzf +s +m \
-      --bind="enter:execute($bin diff --color=always -- {-1} | LESS='-R' less)" \
-      --bind="alt-enter:execute($bin diff --staged --color=always -- {-1} | LESS='-R' less)" \
+      --bind="enter:execute($bin commit)+reload($cmd)" \
       --bind="ctrl-r:reload($cmd)" \
-      --bind="space:execute($bin commit)+reload($cmd)" \
+      --bind="space:execute($bin diff --color=always -- {-1} | LESS='-R' less)" \
+      --bind="alt-space:execute($bin diff --staged --color=always -- {-1} | LESS='-R' less)" \
       --bind="[:execute($bin add {-1})+up+reload($cmd)" \
       --bind="]:execute($git_unstage)+up+reload($cmd)" \
       --bind="!:execute($git_restore)+reload($cmd)" \
