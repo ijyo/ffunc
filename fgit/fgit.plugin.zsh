@@ -8,19 +8,15 @@ function fgit::fzf() {
   " fzf "$@"
 }
 
-function fgit::bin() {
-  print ${FGIT_GIT:-git}
-}
-
 function fgit::inside_work_tree() {
-  eval "$(fgit::bin) rev-parse --is-inside-work-tree >/dev/null"
+  eval "${FGIT_GIT:-git} rev-parse --is-inside-work-tree >/dev/null"
 }
 
 function fgit::log() {
   fgit::inside_work_tree || return 1
 
-  local bin=$(fgit::bin)
-  local cmd="$(fgit::bin) log --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr%' $@"
+  local bin=${FGIT_GIT:-git}
+  local cmd="$bin log --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr%' $@"
 
   local grep_hash="echo {} | grep -o '[a-f0-9]\{7\}'"
   local git_show="$grep_hash | head -1 | xargs -I% $bin show --color=always %"
@@ -38,7 +34,7 @@ function fgit::log() {
 function fgit::status() {
   fgit::inside_work_tree || return 1
 
-  local bin=$(fgit::bin)
+  local bin=${FGIT_GIT:-git}
   local cmd="$bin -c color.status=always status -s $@"
 
   local git_unstage="[[ {1} = '??' ]] && return || $bin restore --staged {-1}"

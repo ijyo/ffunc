@@ -10,7 +10,7 @@ function ffm::fzf() {
     fi
   }'}
 
-  local opts="
+  FZF_DEFAULT_OPTS="
     $FZF_DEFAULT_OPTS
     --ansi
     --no-sort
@@ -20,9 +20,7 @@ function ffm::fzf() {
     --preview-window='right:60%'
     --preview='$preview'
     $FFM_FZF_DEFAULT_OPTS
-  "
-
-  FZF_DEFAULT_OPTS="$opts" fzf "$@"
+  " fzf "$@"
 }
 
 function ffm::ls() {

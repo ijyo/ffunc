@@ -1,5 +1,5 @@
 # fcd
-alias c=fcd::cd
+alias c=fcd::all
 
 # ffm
 alias fo=ffm::open

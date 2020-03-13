@@ -6,7 +6,7 @@ function fcd::fzf() {
   " fzf "$@"
 }
 
-function fcd::do() {
+function fcd::cd() {
   local d=$(print ${(F)@} | sort -u | fcd::fzf)
   [[ -n "$d" ]] && builtin cd $d
 }
@@ -31,7 +31,7 @@ function fcd::cdr::list() {
 function fcd::cdr() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  fcd::do $(fcd::cdr::list)
+  fcd::cd $(fcd::cdr::list)
 }
 
 function fcd::ghq::list() {
@@ -41,14 +41,14 @@ function fcd::ghq::list() {
 function fcd::ghq() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  fcd::do $(fcd::ghq::list)
+  fcd::cd $(fcd::ghq::list)
 }
 
-function fcd::cd() {
+function fcd::all() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
   local cdr=$(fcd::cdr::list)
   local ghq=$(fcd::ghq::list)
 
-  fcd::do $(print "${cdr}\n${ghq}")
+  fcd::cd $(print "${cdr}\n${ghq}")
 }
