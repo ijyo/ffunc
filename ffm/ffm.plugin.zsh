@@ -1,22 +1,28 @@
 function ffm::fzf() {
-  FZF_DEFAULT_OPTS="
+  local preview=${FFM_PREVIEW:-'() {
+    local mime=$(file --mime-type -b {})
+    if [[ "$mime" = "inode/directory" ]]; then
+      ls -a -1 --color=always --group-directories-first {}
+    elif [[ "$mime" =~ "^text/.*" ]]; then
+      cat {}
+    else
+      echo "$mime"
+    fi
+  }'}
+
+  local opts="
     $FZF_DEFAULT_OPTS
     --ansi
-    --bind='ctrl-v:toggle-preview' \
-    --preview-window='right:60%' \
+    --no-sort
+    --multi
+    --tac
+    --bind='ctrl-v:toggle-preview'
+    --preview-window='right:60%'
+    --preview='$preview'
     $FFM_FZF_DEFAULT_OPTS
-  " fzf "$@"
-}
+  "
 
-function ffm::preview() {
-  local mime=$(file --mime-type -b "$1")
-  if [[ "$mime" = "inode/directory" ]]; then
-    ls -a -1 --color=always --group-directories-first "$1"
-  elif [[ "$mime" =~ "^text/.*" ]]; then
-    cat "$1"
-  else
-    echo "$mime"
-  fi
+  FZF_DEFAULT_OPTS="$opts" fzf "$@"
 }
 
 function ffm::ls() {
@@ -26,16 +32,7 @@ function ffm::ls() {
 }
 
 function ffm::open() {
-  local preview="$(typeset -f ffm::preview); ffm::preview {}"
-  preview=${FFM_PREVIEW:-"$preview"}
-
-  local entries=$(cat - | \
-    ffm::fzf \
-      --no-sort \
-      --multi \
-      --tac \
-      --preview="$preview"
-  )
+  local entries=$(cat - | ffm::fzf)
 
   [[ ${#entries} -eq 0 ]] && return 1
 
@@ -58,25 +55,9 @@ function ffm::open() {
 }
 
 function ffm::cp() {
-  local preview="$(typeset -f ffm::preview); ffm::preview {}"
-  preview=${FFM_PREVIEW:-"$preview"}
-
-  ffm::fzf \
-    --no-sort \
-    --multi \
-    --tac \
-    --preview="$preview" | \
-  xargs -I% cp -r % "$1"
+  ffm::fzf | xargs -t -I% cp -r % "$1"
 }
 
 function ffm::mv() {
-  local preview="$(typeset -f ffm::preview); ffm::preview {}"
-  preview=${FFM_PREVIEW:-"$preview"}
-
-  ffm::fzf \
-    --no-sort \
-    --multi \
-    --tac \
-    --preview="$preview" | \
-  xargs -I% mv % "$1"
+  ffm::fzf | xargs -t -I% mv % "$1"
 }
