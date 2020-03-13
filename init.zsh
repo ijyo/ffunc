@@ -2,9 +2,7 @@
 alias c=fcd::cd
 
 # ffm
-function fo=() {
-  ffm::ls | ffm::open
-}
+alias fo=ffm::open
 
 # fgit
 alias gl=fgit::log

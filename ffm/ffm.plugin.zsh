@@ -32,7 +32,7 @@ function ffm::ls() {
 }
 
 function ffm::open() {
-  local entries=$(cat - | ffm::fzf)
+  local entries=$(ffm::ls | ffm::fzf)
 
   [[ ${#entries} -eq 0 ]] && return 1
 
@@ -50,9 +50,13 @@ function ffm::open() {
 }
 
 function ffm::cp() {
-  ffm::fzf | xargs -t -I% cp -r % "$1"
+  [[ $# -eq 0 ]] && return 1
+
+  ffm::ls "$@[1,-2]" | ffm::fzf | xargs -I% cp -v -r % "$@[-1]"
 }
 
 function ffm::mv() {
-  ffm::fzf | xargs -t -I% mv % "$1"
+  [[ $# -eq 0 ]] && return 1
+
+  ffm::ls "$@[1,-2]" | ffm::fzf | xargs -I% mv -v % "$@[-1]"
 }
