@@ -1,6 +1,6 @@
 # ffunc
 
-ffunc is zsh utilities with [fzf](https://github.com/junegunn/fzf).
+zsh utilities with [fzf](https://github.com/junegunn/fzf).
 
 ## Installation
 
