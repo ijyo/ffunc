@@ -19,11 +19,17 @@ function ffm::preview() {
   fi
 }
 
+function ffm::ls() {
+  local p; [[ $# -eq 1 && -d $1 ]] && p="$1/"
+  ls -1 -a --color=always --group-directories-first "$@" | \
+    awk -v p="$p" '{print p $0}'
+}
+
 function ffm::open() {
   local preview="$(typeset -f ffm::preview); ffm::preview {}"
   preview=${FFM_PREVIEW:-"$preview"}
 
-  local entries=$(ls -1 -a --color=always --group-directories-first | \
+  local entries=$(cat - | \
     ffm::fzf \
       --no-sort \
       --multi \
@@ -55,24 +61,22 @@ function ffm::cp() {
   local preview="$(typeset -f ffm::preview); ffm::preview {}"
   preview=${FFM_PREVIEW:-"$preview"}
 
-  ls -1 -a --color=always --group-directories-first | \
-    ffm::fzf \
-      --no-sort \
-      --multi \
-      --tac \
-      --preview="$preview" | \
-    xargs -I% cp -r % "$1"
+  ffm::fzf \
+    --no-sort \
+    --multi \
+    --tac \
+    --preview="$preview" | \
+  xargs -I% cp -r % "$1"
 }
 
 function ffm::mv() {
   local preview="$(typeset -f ffm::preview); ffm::preview {}"
   preview=${FFM_PREVIEW:-"$preview"}
 
-  ls -1 -a --color=always --group-directories-first | \
-    ffm::fzf \
-      --no-sort \
-      --multi \
-      --tac \
-      --preview="$preview" | \
-    xargs -I% mv % "$1"
+  ffm::fzf \
+    --no-sort \
+    --multi \
+    --tac \
+    --preview="$preview" | \
+  xargs -I% mv % "$1"
 }
