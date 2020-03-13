@@ -41,11 +41,6 @@ function ffm::open() {
     return
   fi
 
-  if [[ -n "$FFM_OPEN" ]]; then
-    $FFM_OPEN ${(f)entries}
-    return
-  fi
-
   local first=${entries[(f)1]}
   if [[ -d $first ]]; then
     builtin cd $first
