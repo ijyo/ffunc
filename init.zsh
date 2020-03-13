@@ -3,6 +3,8 @@ alias c=fcd::all
 
 # ffm
 alias fo=ffm::open
+alias fcp=ffm::cp
+alias fmv=ffm::mv
 
 # fgit
 alias gl=fgit::log
