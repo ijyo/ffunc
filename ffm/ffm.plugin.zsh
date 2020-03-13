@@ -43,7 +43,7 @@ function ffm::open() {
 
   local first=${entries[(f)1]}
   if [[ -d $first ]]; then
-    builtin cd $first
+    builtin cd $first && ffm::open
   else
     xdg-open $first
   fi
