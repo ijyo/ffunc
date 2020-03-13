@@ -50,3 +50,16 @@ function ffm::open() {
     xdg-open $first
   fi
 }
+
+function ffm::cp() {
+  local preview="$(typeset -f ffm::preview); ffm::preview {}"
+  preview=${FFM_PREVIEW:-"$preview"}
+
+  ls -1 -a --color=always --group-directories-first | \
+    ffm::fzf \
+      --no-sort \
+      --multi \
+      --tac \
+      --preview="$preview" | \
+    xargs -I% cp -r % "$1"
+}
