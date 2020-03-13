@@ -63,3 +63,16 @@ function ffm::cp() {
       --preview="$preview" | \
     xargs -I% cp -r % "$1"
 }
+
+function ffm::mv() {
+  local preview="$(typeset -f ffm::preview); ffm::preview {}"
+  preview=${FFM_PREVIEW:-"$preview"}
+
+  ls -1 -a --color=always --group-directories-first | \
+    ffm::fzf \
+      --no-sort \
+      --multi \
+      --tac \
+      --preview="$preview" | \
+    xargs -I% mv % "$1"
+}
