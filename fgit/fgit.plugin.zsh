@@ -1,10 +1,10 @@
 function fgit::fzf() {
   FZF_DEFAULT_OPTS="
     $FZF_DEFAULT_OPTS
-    --ansi
-    --bind='ctrl-v:toggle-preview' \
-    --preview-window='right:60%' \
     $FGIT_FZF_DEFAULT_OPTS
+    --ansi
+    --bind='ctrl-v:toggle-preview'
+    --preview-window='right:60%'
   " fzf "$@"
 }
 

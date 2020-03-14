@@ -1,9 +1,9 @@
 function fhist::fzf() {
   FZF_DEFAULT_OPTS="
     $FZF_DEFAULT_OPTS
+    $FHIST_FZF_DEFAULT_OPTS
     --no-sort
     --tac
-    $FHIST_FZF_DEFAULT_OPTS
   " fzf "$@"
 }
 

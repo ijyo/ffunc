@@ -12,6 +12,7 @@ function ffm::fzf() {
 
   FZF_DEFAULT_OPTS="
     $FZF_DEFAULT_OPTS
+    $FFM_FZF_DEFAULT_OPTS
     --ansi
     --no-sort
     --multi
@@ -19,7 +20,6 @@ function ffm::fzf() {
     --bind='ctrl-v:toggle-preview'
     --preview-window='right:60%'
     --preview='$preview'
-    $FFM_FZF_DEFAULT_OPTS
   " fzf "$@"
 }
 
