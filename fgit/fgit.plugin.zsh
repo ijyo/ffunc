@@ -16,12 +16,13 @@ function fgit::log() {
   fgit::inside_work_tree || return 1
 
   local bin=${FGIT_GIT:-git}
-  local cmd="$bin log --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr%' $@"
+  local cmd="$bin log --graph --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' $@"
 
   local grep_hash="echo {} | grep -o '[a-f0-9]\{7\}'"
   local git_show="$grep_hash | head -1 | xargs -I% $bin show --color=always %"
 
   eval $cmd | \
+    awk '$0 ~ /[a-f0-9]{7}/' | \
     fgit::fzf +s +m \
       --tiebreak=index \
       --bind="enter:execute($git_show | LESS='-R' less)" \
