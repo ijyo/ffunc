@@ -6,11 +6,6 @@ function fcd::fzf() {
   " fzf "$@"
 }
 
-function fcd::cd() {
-  local d=$(print ${(F)@} | sort -u | fcd::fzf)
-  [[ -n "$d" ]] && builtin cd $d
-}
-
 function fcd::cdr::compact-chpwd_recent_dirs() {
   emulate -L zsh
   setopt extendedglob
@@ -31,7 +26,8 @@ function fcd::cdr::list() {
 function fcd::cdr() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  fcd::cd $(fcd::cdr::list)
+  local d=$(fcd::cdr::list | sort -u | fcd::fzf)
+  [[ -n "$d" ]] && builtin cd "${(Q)d}"
 }
 
 function fcd::ghq::list() {
@@ -41,14 +37,15 @@ function fcd::ghq::list() {
 function fcd::ghq() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  fcd::cd $(fcd::ghq::list)
+  local d=$(fcd::ghq::list | sort -u | fcd::fzf)
+  [[ -n "$d" ]] && builtin cd "${(Q)d}"
 }
 
 function fcd::all() {
   if [ $# -gt 0 ]; then builtin cd $@; return; fi
 
-  local cdr=$(fcd::cdr::list)
-  local ghq=$(fcd::ghq::list)
-
-  fcd::cd $(print "${cdr}\n${ghq}")
+  IFS=$'\n'
+  local list=($(fcd::cdr::list) $(fcd::ghq::list))
+  local d=$(echo "${(F)list[@]}" | sort -u | fcd::fzf)
+  [[ -n "$d" ]] && builtin cd "${(Q)d}"
 }
