@@ -38,6 +38,7 @@ function fgit::status() {
   local bin=${FGIT_GIT:-git}
   local cmd="$bin -c color.status=always status -s $@"
 
+  local preview="[[ {1} = '??' ]] && cat {-1} || $bin diff --color=always -- {-1}"
   local git_unstage="[[ {1} = '??' ]] && return || $bin restore --staged {-1}"
   local git_restore="[[ {1} = '??' ]] && return || $bin restore {-1}"
 
@@ -51,5 +52,5 @@ function fgit::status() {
       --bind="]:execute($git_unstage)+up+reload($cmd)" \
       --bind="!:execute($git_restore)+reload($cmd)" \
       --bind='ctrl-y:execute(echo -n {-1} | xsel -ib)+abort' \
-      --preview="$bin diff --color=always -- {-1}"
+      --preview="$preview"
 }
