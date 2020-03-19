@@ -44,7 +44,7 @@ function fgit::status() {
   local git_restore="[[ {1} = '??' ]] && return || $bin restore {-1}"
 
   eval $cmd | \
-    fgit::fzf +s +m \
+    fgit::fzf +m \
       --bind="enter:execute($bin diff --color=always -- {-1} | LESS='-R' less)" \
       --bind="alt-enter:execute($bin diff --staged --color=always -- {-1} | LESS='-R' less)" \
       --bind="ctrl-r:reload($cmd)" \

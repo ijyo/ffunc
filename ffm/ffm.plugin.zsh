@@ -14,7 +14,6 @@ function ffm::fzf() {
     $FZF_DEFAULT_OPTS
     $FFM_FZF_DEFAULT_OPTS
     --ansi
-    --no-sort
     --multi
     --tac
     --bind='ctrl-v:toggle-preview'
