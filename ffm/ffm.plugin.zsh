@@ -2,7 +2,7 @@ function ffm::fzf() {
   local preview=${FFM_PREVIEW:-'() {
     local mime=$(file --mime-type -b {})
     if [[ "$mime" = "inode/directory" ]]; then
-      ls -a -1 --color=always --group-directories-first {}
+      ls -A -1 --color=always --group-directories-first {}
     elif [[ "$mime" =~ "^text/.*" ]]; then
       cat {}
     else
@@ -24,12 +24,12 @@ function ffm::fzf() {
 
 function ffm::ls() {
   local p; [[ $# -eq 1 && -d $1 ]] && p="$1/"
-  ls -1 -a --color=always --group-directories-first "$@" | \
+  ls -1 --color=always --group-directories-first "$@" | \
     awk -v p="$p" '{print p $0}'
 }
 
 function ffm::open() {
-  local entries=$(ffm::ls | ffm::fzf)
+  local entries=$(ffm::ls -a | ffm::fzf)
 
   [[ ${#entries} -eq 0 ]] && return 1
 
@@ -49,11 +49,11 @@ function ffm::open() {
 function ffm::cp() {
   [[ $# -eq 0 ]] && return 1
 
-  ffm::ls "$@[1,-2]" | ffm::fzf | xargs -I% cp -v -r % "$@[-1]"
+  ffm::ls -A "$@[1,-2]" | ffm::fzf | xargs -I% cp -v -r % "$@[-1]"
 }
 
 function ffm::mv() {
   [[ $# -eq 0 ]] && return 1
 
-  ffm::ls "$@[1,-2]" | ffm::fzf | xargs -I% mv -v % "$@[-1]"
+  ffm::ls -A "$@[1,-2]" | ffm::fzf | xargs -I% mv -v % "$@[-1]"
 }
