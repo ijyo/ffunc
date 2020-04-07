@@ -49,11 +49,11 @@ function ffm::open() {
 function ffm::cp() {
   [[ $# -eq 0 ]] && return 1
 
-  ffm::ls -A "$@[1,-2]" | ffm::fzf | xargs -I% cp -v -r % "$@[-1]"
+  ffm::ls "$@[1,-2]" | ffm::fzf | xargs -I% cp -v -r % "$@[-1]"
 }
 
 function ffm::mv() {
   [[ $# -eq 0 ]] && return 1
 
-  ffm::ls -A "$@[1,-2]" | ffm::fzf | xargs -I% mv -v % "$@[-1]"
+  ffm::ls "$@[1,-2]" | ffm::fzf | xargs -I% mv -v % "$@[-1]"
 }
