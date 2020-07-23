@@ -7,7 +7,7 @@ zsh utilities with [fzf](https://github.com/junegunn/fzf).
 ### e.g. [zinit](https://github.com/zdharma/zinit)
 
 ```zsh
-zinit ice from'gitlab' src'init.zsh'
+zinit ice src'init.zsh'
 zinit light ijyo/ffunc.git
 ```
 
