@@ -18,7 +18,7 @@ function fgit::log() {
   local bin=${FGIT_GIT:-git}
   local cmd="$bin log --graph --color=always --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' $@"
 
-  local grep_hash="echo {} | grep -o '[a-f0-9]\{7\}'"
+  local grep_hash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
   local git_show="$grep_hash | head -1 | xargs -I% $bin show --color=always %"
 
   eval $cmd | \
